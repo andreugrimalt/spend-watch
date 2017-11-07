@@ -4,7 +4,6 @@ const entries = (state = [], action) => {
       return [
         ...state,
         {
-          id: action.id,
           amount: action.amount,
           time: action.time,
           place: action.place,

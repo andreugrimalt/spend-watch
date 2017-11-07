@@ -8,18 +8,29 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
 
-const App = ({ entries }) => {
-  console.log(entries);
+import EntryListContainer from '../containers/EntryListContainer';
+import EntryInputContainer from '../containers/EntryInputContainer';
+
+const uid = 'iwOrGZIswOfRWJQafOKS0w6heWi1';
+
+
+const App = () => {
+  console.log('hey');
   return (
     <div>
-      <h1>{entries}</h1>
+      <EntryListContainer />
+      <EntryInputContainer />
     </div>
   );
 };
 
 App.propTypes = {
-  entries: PropTypes.object,
+  data: PropTypes.object,
   firebase: PropTypes.object, // comes from firebaseConnect
+  state: PropTypes.any,
+  dispatch: PropTypes.any,
 };
-
-export default compose(firebaseConnect(['entries']), connect(state => ({ entries: state.firebase.data.entries })))(App);
+/* eslint-disable */
+export default compose(firebaseConnect([`${uid}/entries`]), connect(state => {
+  return ({ data: state.firebase.data[uid] });
+}))(App);
