@@ -4,21 +4,19 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isEmpty } from 'react-redux-firebase';
 
-import Entry from '../components/Entry';
+import EntryList, { Loading } from '../components/EntryList';
 
 const uid = 'iwOrGZIswOfRWJQafOKS0w6heWi1';
 
 const EntryListContainer = ({ entries }) => {
   if (isEmpty(entries) || isEmpty(entries.entries)) {
     return (
-      <div>
-        Loading...
-      </div>
+      <Loading />
     );
   }
-  return Object.keys(entries.entries).map(key => (
-    <Entry key={key} amount={parseFloat(entries.entries[key].amount, 10)} />
-  ));
+  return (
+    <EntryList entries={entries.entries} />
+  );
 };
 /* eslint-disable */
 EntryListContainer.propTypes = {
