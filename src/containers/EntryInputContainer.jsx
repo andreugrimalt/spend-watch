@@ -14,7 +14,7 @@ class EntryInputContainer extends Component {
     super(props);
     // State for this component only
     this.state = {
-      inputValue: 0,
+      inputValue: '',
     };
   }
   updateInputValue(e) {
@@ -22,14 +22,17 @@ class EntryInputContainer extends Component {
       inputValue: e.target.value,
     });
   }
-  add() {
+  add(e) {
     const amount = parseFloat(this.state.inputValue, 10);
     this.props.dispatch(addEntry(this.props.firebase, `${uid}/entries`, { amount, time: Date.now(), place: 'Sainsburys' }));
+    this.setState({
+      inputValue: '',
+    });
   }
 
   render() {
     return (
-      <EntryInput add={this.add.bind(this)} updateInputValue={this.updateInputValue.bind(this)}/>
+      <EntryInput add={this.add.bind(this)} updateInputValue={this.updateInputValue.bind(this)} value={this.state.inputValue}/>
     );
   }
 }
