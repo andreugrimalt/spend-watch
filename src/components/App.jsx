@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'; // can also come from react if react <= 15.4
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
+import styled from 'styled-components';
 
 import EntryListContainer from '../containers/EntryListContainer';
 import EntryInputContainer from '../containers/EntryInputContainer';
@@ -14,15 +15,34 @@ import EntryInputContainer from '../containers/EntryInputContainer';
 const uid = 'iwOrGZIswOfRWJQafOKS0w6heWi1';
 
 
-const App = () => {
-  console.log('hey');
-  return (
-    <div>
-      <EntryListContainer />
-      <EntryInputContainer />
-    </div>
-  );
-};
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-family: Helvetica Neue;
+  box-sizing: border-box;
+  color: #212121;
+
+  // TODO: Remove before pushing, only for dev
+  // ::after {
+  //   content: "";
+  //   background: url(/design.jpeg);
+  //   background-size: contain;
+  //   opacity: 0.5;
+  //   top: 0;
+  //   left: 0;
+  //   bottom: 0;
+  //   right: 0;
+  //   position: absolute;
+  //   z-index: -1;
+  // }
+`;
+
+const App = () => (
+  <Div>
+    <EntryListContainer />
+    <EntryInputContainer />
+  </Div>
+);
 
 App.propTypes = {
   data: PropTypes.object,
