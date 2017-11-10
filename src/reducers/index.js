@@ -3,6 +3,7 @@ import { createStore, combineReducers, compose } from 'redux';
 import { reactReduxFirebase, firebaseStateReducer } from 'react-redux-firebase';
 import firebase from 'firebase';
 import entries from './entries';
+import login from './login';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBpb8tGo9YOAfVFY8h-QWG5QUHy0DYs-SI',
@@ -29,6 +30,7 @@ const createStoreWithFirebase = compose(reactReduxFirebase(firebase, reduxFireba
 const rootReducer = combineReducers({
   firebase: firebaseStateReducer,
   entries,
+  login,
 });
 
 // Create store with reducers and initial state

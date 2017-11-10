@@ -17,8 +17,9 @@ export const addEntry = (firebase, path, { amount, time, place }) => {
   };
 };
 
-export const removeEntry = (id, time) => ({
-  type: 'REMOVE_ENTRY',
-  id,
-  time,
+export const setUser = ({ uid, displayName, photoURL }) => ({
+  type: 'SET_USER',
+  uid,
+  displayName,
+  photoURL,
 });
