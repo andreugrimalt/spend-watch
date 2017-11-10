@@ -17,12 +17,12 @@ firebase.initializeApp(firebaseConfig);
 
 const reduxFirebaseConfig = {
   userProfile: 'users',
-  enableLogging: true,
+  // enableLogging: true,
 };
 
 // Add reactReduxFirebase store enhancer
 /* eslint-disable */
-const createStoreWithFirebase = compose(reactReduxFirebase(firebase, reduxFirebaseConfig))(createStore);
+const createStoreWithFirebase = compose(reactReduxFirebase(firebase, reduxFirebaseConfig), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())(createStore);
 /* eslint-enable */
 
 // Add firebase to reducers
