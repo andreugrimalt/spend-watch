@@ -17,6 +17,7 @@ const Subtitle = styled.div`
 `;
 
 const List = styled.ul`
+  display: block;
   height: 631px;
   overflow-y: auto;
 `;
