@@ -16,13 +16,21 @@ class LoginContainer extends Component {
       email: '',
       password: '',
       showSignInButton: true,
+      signAction: 'SIGN_IN',
     };
 
     // TODO: Use decorator here
     this.signIn = this.signIn.bind(this);
+    this.signUp = this.signUp.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.doSignAction = this.doSignAction.bind(this);
+    this.toggleSignAction = this.toggleSignAction.bind(this);
   }
-
+  toggleSignAction() {
+    this.setState({
+      signAction: this.state.signAction === 'SIGN_IN' ? 'SIGN_UP' : 'SIGN_IN',
+    });
+  }
   async signIn() {
     try {
       this.setState({
@@ -43,6 +51,38 @@ class LoginContainer extends Component {
     }
   }
 
+  async signUp() {
+    try {
+      this.setState({
+        showSignInButton: false,
+      });
+      const signUp = await this.props
+        .firebase.auth()
+        .createUserWithEmailAndPassword(
+          this.state.email,
+          this.state.password,
+        );
+      this.props.dispatch(setUser(signUp));
+      this.props.history.push('/list');
+    } catch (error) {
+      this.setState({
+        showSignInButton: true,
+      });
+    }
+  }
+
+  doSignAction() {
+    switch (this.state.signAction) {
+      case 'SIGN_IN':
+        this.signIn();
+        break;
+      case 'SIGN_UP':
+        this.signUp();
+        break;
+      default:
+    }
+  }
+
   handleInputChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -51,8 +91,10 @@ class LoginContainer extends Component {
     return (
       <Login
         updateInputValue={this.handleInputChange}
-        signIn={this.signIn}
+        signIn={this.doSignAction}
         showSignInButton={this.state.showSignInButton}
+        toggleSignAction={this.toggleSignAction}
+        signAction={this.state.signAction}
       />
     );
   }

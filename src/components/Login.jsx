@@ -37,7 +37,10 @@ const Login = props =>
       <Logo role="img" aria-label="logo">🥕</Logo>
       <Input onChange={props.updateInputValue} placeholder="Email" name="email" />
       <Input onChange={props.updateInputValue} placeholder="Password" name="password" />
-      <SignIn onClick={props.signIn}>{props.showSignInButton ? 'Sign in' : ''}</SignIn>
+      <SignIn onClick={props.signIn}>{props.showSignInButton ? props.signAction : ''}</SignIn>
+      <span>or
+        <button onClick={props.toggleSignAction}>{props.signAction}</button>
+      </span>
     </Div>
   );
 /* eslint-disable */
@@ -45,6 +48,8 @@ Login.propTypes = {
   updateInputValue: PropTypes.any,
   signIn: PropTypes.any,
   showSignInButton: PropTypes.any,
+  toggleSignAction: PropTypes.any,
+  signAction: PropTypes.any,
 }
 
 export default Login;
