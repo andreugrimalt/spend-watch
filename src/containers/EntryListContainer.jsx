@@ -1,14 +1,13 @@
-import React from 'react';
+/* eslint-disable */
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isEmpty } from 'react-redux-firebase';
 import crypto from 'crypto';
+import { setUser } from '../actions';
 
 import EntryList, { Loading } from '../components/EntryList';
-
-const uid = 'iwOrGZIswOfRWJQafOKS0w6heWi1';
-
 
 const getDateSet = entries => {
   const dates = {};
@@ -33,24 +32,55 @@ const getDateSet = entries => {
   return dates;
 };
 
-const EntryListContainer = ({ entries }) => {
-  if (isEmpty(entries) || isEmpty(entries.entries)) {
+class EntryListContainer extends Component {
+  componentWillMount() {
+    this.props.firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.props.dispatch(setUser(user));
+      }
+    });
+    // this.props.dispatch(setUser({ uid: 1234 }));
+  }
+
+  render() {
+    if (isEmpty(this.props.entries) || isEmpty(this.props.entries.entries)) {
+      return (
+        <Loading />
+      );
+    }
     return (
-      <Loading />
+      <EntryList entries={getDateSet(this.props.entries.entries)} />
     );
   }
-  return (
-    <EntryList entries={getDateSet(entries.entries)} />
-  );
-};
+}
 /* eslint-disable */
 EntryListContainer.propTypes = {
   entries: PropTypes.object,
+  login: PropTypes.any,
+  firebase: PropTypes.object,
+  dispatch: PropTypes.any,
 };
 
 export default compose(
-  firebaseConnect([`${uid}/entries`]),
-  connect(state => ({
-    entries: state.firebase.data[uid],
-  })),
+  connect(state => {
+    const uid = state.login.user ? state.login.user.uid : '';
+    // console.log(state);
+    return {
+      entries: state.firebase.data[uid],
+      login: state.login,
+    };
+  }),
+  firebaseConnect((props, store) => {
+    const state = store.getState();
+    const uid = state.login.user ? state.login.user.uid : '';
+    return [`${uid}/entries`];
+  }),
 )(EntryListContainer);
+
+// const connectedComponent = connect((state) => {
+//   const uid = state.login.user ? state.login.user.uid : '';
+//   return {
+//     entries: state.firebase.data[uid],
+//     login: state.login,
+//   };
+// })(EntryListContainer);

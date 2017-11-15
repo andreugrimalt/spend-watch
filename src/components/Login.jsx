@@ -31,18 +31,21 @@ const Logo = styled.span`
   font-size: 90pt;
 `;
 /* eslint-disable jsx-a11y/accessible-emoji */
-const Login = props =>
-  (
+const Login = props => {
+  const signActionText = props.signAction === 'SIGN_IN' ? 'Sign in' : 'Sign up';
+  const otherSignAction = props.signAction === 'SIGN_IN' ? 'Sign up' : 'Sign in';
+  return (
     <Div>
       <Logo role="img" aria-label="logo">🥕</Logo>
       <Input onChange={props.updateInputValue} placeholder="Email" name="email" />
       <Input onChange={props.updateInputValue} placeholder="Password" name="password" />
-      <SignIn onClick={props.signIn}>{props.showSignInButton ? props.signAction : ''}</SignIn>
+      <SignIn onClick={props.signIn}>{props.showSignInButton ? signActionText : ''}</SignIn>
       <span>or
-        <button onClick={props.toggleSignAction}>{props.signAction}</button>
+        <button onClick={props.toggleSignAction}>&nbsp;{otherSignAction}</button>
       </span>
     </Div>
   );
+};
 /* eslint-disable */
 Login.propTypes = {
   updateInputValue: PropTypes.any,

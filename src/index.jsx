@@ -5,7 +5,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import store from './reducers';
 import Root from './containers/Root';
 
-// render(<Provider store={store}><Root /></Provider>, document.getElementById('root'));
 render(
   <Router>
     <Root store={store} />

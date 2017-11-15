@@ -27,6 +27,7 @@ const createStoreWithFirebase = compose(reactReduxFirebase(firebase, reduxFireba
 /* eslint-enable */
 
 // Add firebase to reducers
+// TODO: 'entries' doesnt make sense here
 const rootReducer = combineReducers({
   firebase: firebaseStateReducer,
   entries,

@@ -24,7 +24,7 @@ class EntryInputContainer extends Component {
   }
   add(e) {
     const amount = parseFloat(this.state.inputValue, 10);
-    this.props.dispatch(addEntry(this.props.firebase, `${uid}/entries`, { amount, time: Date.now(), place: 'Sainsburys' }));
+    this.props.dispatch(addEntry(this.props.firebase, `${this.props.login.user.uid}/entries`, { amount, time: Date.now(), place: 'Sainsburys' }));
     this.setState({
       inputValue: '',
     });
@@ -48,4 +48,6 @@ EntryInputContainer.defaultProps = {
   // dispatch: PropTypes.any,
 };
 
-export default compose(firebaseConnect(), connect())(EntryInputContainer);
+export default compose(firebaseConnect(), connect(state => {
+  return { login: state.login };
+}))(EntryInputContainer);

@@ -26,11 +26,13 @@ class LoginContainer extends Component {
     this.doSignAction = this.doSignAction.bind(this);
     this.toggleSignAction = this.toggleSignAction.bind(this);
   }
+
   toggleSignAction() {
     this.setState({
       signAction: this.state.signAction === 'SIGN_IN' ? 'SIGN_UP' : 'SIGN_IN',
     });
   }
+
   async signIn() {
     try {
       this.setState({
