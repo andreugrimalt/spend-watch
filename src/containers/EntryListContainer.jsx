@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import { firebaseConnect, isEmpty } from 'react-redux-firebase';
 import crypto from 'crypto';
 import { setUser } from '../actions';
+import { withRouter } from 'react-router';
 
 import EntryList, { Loading } from '../components/EntryList';
 
@@ -37,9 +38,10 @@ class EntryListContainer extends Component {
     this.props.firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.props.dispatch(setUser(user));
+      } else {
+        this.props.history.push('/login');
       }
     });
-    // this.props.dispatch(setUser({ uid: 1234 }));
   }
 
   render() {
@@ -62,6 +64,7 @@ EntryListContainer.propTypes = {
 };
 
 export default compose(
+  withRouter,
   connect(state => {
     const uid = state.login.user ? state.login.user.uid : '';
     // console.log(state);
@@ -72,6 +75,7 @@ export default compose(
   }),
   firebaseConnect((props, store) => {
     const state = store.getState();
+    console.log(state);
     const uid = state.login.user ? state.login.user.uid : '';
     return [`${uid}/entries`];
   }),
