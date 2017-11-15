@@ -32,6 +32,7 @@ class EntryInputContainer extends Component {
 
   render() {
     return (
+      // TODO: Don't use .bind. Use as in LoginContainer
       <EntryInput add={this.add.bind(this)} updateInputValue={this.updateInputValue.bind(this)} value={this.state.inputValue}/>
     );
   }
