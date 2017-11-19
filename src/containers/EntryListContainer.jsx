@@ -35,23 +35,28 @@ const getDateSet = entries => {
 
 class EntryListContainer extends Component {
   componentWillMount() {
+    console.log(this.props);
     this.props.firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.props.dispatch(setUser(user));
-      } else {
-        this.props.history.push('/login');
-      }
+      // if (user) {
+      //   this.props.dispatch(setUser(user));
+      // } else {
+      //   this.props.history.push('/login');
+      // }
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+  }
+
   render() {
-    if (isEmpty(this.props.entries) || isEmpty(this.props.entries.entries)) {
-      return (
-        <Loading />
-      );
-    }
+    // if (isEmpty(this.props.entries) || isEmpty(this.props.entries.entries)) {
+    //   return (
+    //     <Loading />
+    //   );
+    // }
     return (
-      <EntryList entries={getDateSet(this.props.entries.entries)} />
+      <EntryList auth={this.props.auth} />
     );
   }
 }
@@ -63,28 +68,56 @@ EntryListContainer.propTypes = {
   dispatch: PropTypes.any,
 };
 
+// export default connect(
+//   ({ firebase }) => ({
+//     auth: firebase.auth,
+//   })
+// )(EntryListContainer)
+
 export default compose(
-  withRouter,
-  connect(state => {
-    const uid = state.login.user ? state.login.user.uid : '';
-    // console.log(state);
-    return {
-      entries: state.firebase.data[uid],
-      login: state.login,
-    };
-  }),
-  firebaseConnect((props, store) => {
-    const state = store.getState();
-    console.log(state);
-    const uid = state.login.user ? state.login.user.uid : '';
-    return [`${uid}/entries`];
-  }),
+  firebaseConnect(),
+  connect(
+    ({ firebase }) => ({
+      auth: firebase.auth,
+    })
+  )
 )(EntryListContainer);
 
-// const connectedComponent = connect((state) => {
-//   const uid = state.login.user ? state.login.user.uid : '';
-//   return {
-//     entries: state.firebase.data[uid],
-//     login: state.login,
-//   };
-// })(EntryListContainer);
+// export default compose(
+//   firebaseConnect((props, store) => ([
+//     `todos/${store.getState().firebase.auth.uid}`
+//   ]),
+//   connect(({ firebase: { data, auth } }) => ({
+//     todosList: data.todos && data.todos[auth.uid],
+//   }))
+// )(SomeComponent)
+
+// const fbWrapped = firebaseConnect((props, store) => ([
+//   `${store.getState().firebase.auth.uid}/entries`
+// ]))(EntryListContainer)
+
+// // pass todos list for the specified type of todos from redux as `this.props.todosList`
+// export default connect(({ firebase: { data, auth } }) => {
+//   console.log(data, auth);
+//   return ({
+//     entries: data[auth.uid] ? data[auth.uid] : [],
+//   })
+// })(fbWrapped)
+
+// export default compose(
+//   withRouter,
+//   connect(state => {
+//     const uid = state.login.user ? state.login.user.uid : '';
+//     // console.log(state);
+//     return {
+//       entries: state.firebase.data[uid],
+//       login: state.login,
+//     };
+//   }),
+//   firebaseConnect((props, store) => {
+//     const state = store.getState();
+//     console.log(state);
+//     const uid = state.login.user ? state.login.user.uid : '';
+//     return [`${uid}/entries`];
+//   }),
+// )(EntryListContainer);
